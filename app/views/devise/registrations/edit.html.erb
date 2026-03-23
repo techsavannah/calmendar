@@ -1,0 +1,65 @@
+<div class="flex min-h-screen items-center justify-center py-8">
+  <div class="card w-full max-w-sm bg-base-100 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title text-2xl font-bold">Account Settings</h2>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name),
+            html: { method: :put }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div class="form-control">
+          <%= f.label :email, class: "label" do %>
+            <span class="label-text">Email</span>
+          <% end %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email",
+                class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="divider text-sm">Change Password</div>
+        <p class="text-sm text-base-content/60 -mt-2">Leave blank to keep your current password.</p>
+
+        <div class="form-control mt-2">
+          <%= f.label :password, class: "label" do %>
+            <span class="label-text">New Password</span>
+            <% if @minimum_password_length %>
+              <span class="label-text-alt"><%= @minimum_password_length %> characters minimum</span>
+            <% end %>
+          <% end %>
+          <%= f.password_field :password, autocomplete: "new-password",
+                class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="form-control mt-2">
+          <%= f.label :password_confirmation, class: "label" do %>
+            <span class="label-text">Confirm New Password</span>
+          <% end %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password",
+                class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="divider text-sm">Confirm Changes</div>
+
+        <div class="form-control">
+          <%= f.label :current_password, class: "label" do %>
+            <span class="label-text">Current Password</span>
+            <span class="label-text-alt">Required to save changes</span>
+          <% end %>
+          <%= f.password_field :current_password, autocomplete: "current-password",
+                class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="form-control mt-6">
+          <%= f.submit "Save Changes", class: "btn btn-primary w-full" %>
+        </div>
+      <% end %>
+
+      <div class="divider"></div>
+
+      <h3 class="font-semibold text-error">Danger Zone</h3>
+      <%= button_to "Delete My Account", registration_path(resource_name),
+            params: { _method: :delete },
+            data: { turbo_confirm: "Are you sure? This cannot be undone." },
+            class: "btn btn-error btn-outline btn-sm mt-2 w-full" %>
+    </div>
+  </div>
+</div>

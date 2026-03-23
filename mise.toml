@@ -1,0 +1,4 @@
+[tools]
+bun = "latest"
+node = "24"
+ruby = "4.0.2"

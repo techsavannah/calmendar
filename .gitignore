@@ -29,6 +29,8 @@
 !/tmp/storage/.keep
 
 /public/assets
+/app/assets/builds
+/node_modules
 
 # Ignore key files for decrypting credentials and more.
 /config/*.key

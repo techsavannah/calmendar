@@ -1,2 +1,4 @@
 #!/usr/bin/env ruby
-exec "./bin/rails", "server", *ARGV
+require "fileutils"
+FileUtils.mkdir_p "app/assets/builds"
+exec "foreman start -f Procfile.dev"

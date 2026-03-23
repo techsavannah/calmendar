@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
   <head>
     <title><%= content_for(:title) || "Calmendar" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -22,7 +22,18 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   </head>
 
-  <body>
+  <body class="min-h-screen bg-base-200">
+    <% if notice %>
+      <div role="alert" class="alert alert-success fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-sm shadow-lg">
+        <span><%= notice %></span>
+      </div>
+    <% end %>
+    <% if alert %>
+      <div role="alert" class="alert alert-error fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-sm shadow-lg">
+        <span><%= alert %></span>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
