@@ -10,7 +10,6 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-  # Replace with your first real controller once it exists.
-  root "rails/health#show"
+  root "static#index"
+  get "home", to: "pages#home"
 end

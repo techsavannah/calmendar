@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   #   skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :authenticate_user!
 
+  def after_sign_in_path_for(_resource_or_scope)
+    home_path
+  end
+
   def after_sign_out_path_for(_resource_or_scope)
     new_user_session_path
   end

@@ -1,0 +1,21 @@
+<div class="flex min-h-screen items-center justify-center">
+  <div class="text-center max-w-lg px-6">
+    <h1 class="text-5xl font-bold">Welcome to Calmendar</h1>
+    <p class="mt-4 text-lg text-base-content/70">Hope you're having a wonderful day.</p>
+
+    <p class="mt-6 text-base-content/60">
+      This is a project by <a href="https://techsav.co" class="link link-primary" target="_blank" rel="noopener">TechSAV</a>,
+      the tech community in Savannah, GA. We're just getting started, so there's
+      not much to see here yet &mdash; but we're building fast!
+    </p>
+
+    <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+      <% if user_signed_in? %>
+        <p class="text-base-content/50 self-center">You're signed in as <strong><%= current_user.email %></strong>.</p>
+      <% else %>
+        <%= link_to "Create an account", new_user_registration_path, class: "btn btn-primary" %>
+        <%= link_to "Sign in", new_user_session_path, class: "btn btn-ghost" %>
+      <% end %>
+    </div>
+  </div>
+</div>
