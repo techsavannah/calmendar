@@ -9,3 +9,13 @@ Capybara.configure do |config|
   config.default_driver    = :rack_test   # fast default for non-JS specs
   config.javascript_driver = :playwright  # used when js: true metadata is set
 end
+
+RSpec.configure do |config|
+  config.before(:each, type: :system) do
+    driven_by :rack_test
+  end
+
+  config.before(:each, type: :system, js: true) do
+    driven_by :playwright
+  end
+end

@@ -23,6 +23,23 @@
   </head>
 
   <body class="min-h-screen bg-base-200">
+    <% if user_signed_in? %>
+      <nav class="navbar bg-base-100 shadow-sm px-4">
+        <div class="navbar-start">
+          <%= link_to "Calmendar", home_path, class: "text-xl font-bold" %>
+        </div>
+        <div class="navbar-center hidden sm:flex">
+          <ul class="menu menu-horizontal px-1 gap-1">
+            <li><%= link_to "Groups", groups_path %></li>
+          </ul>
+        </div>
+        <div class="navbar-end gap-2">
+          <span class="text-sm text-base-content/50 hidden sm:inline"><%= current_user.email %></span>
+          <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "btn btn-ghost btn-sm" %>
+        </div>
+      </nav>
+    <% end %>
+
     <% if notice %>
       <div role="alert" class="alert alert-success fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-sm shadow-lg">
         <span><%= notice %></span>
