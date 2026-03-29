@@ -7,8 +7,8 @@
     "build:css:watch": "bun x tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --watch"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.0.0",
-    "daisyui": "^5.0.0",
-    "tailwindcss": "^4.0.0"
+    "@tailwindcss/cli": "^4.2.2",
+    "daisyui": "^5.5.19",
+    "tailwindcss": "^4.2.2"
   }
 }
