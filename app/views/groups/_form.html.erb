@@ -1,0 +1,25 @@
+<%= form_with(model: group, class: "space-y-4") do |f| %>
+  <% if group.errors.any? %>
+    <div role="alert" class="alert alert-error">
+      <ul>
+        <% group.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-control">
+    <%= f.label :name, class: "label" %>
+    <%= f.text_field :name, class: "input input-bordered w-full", required: true %>
+  </div>
+
+  <div class="form-control">
+    <%= f.label :description, class: "label" %>
+    <%= f.text_area :description, class: "textarea textarea-bordered w-full", rows: 4 %>
+  </div>
+
+  <div class="form-control mt-6">
+    <%= f.submit class: "btn btn-primary w-full" %>
+  </div>
+<% end %>

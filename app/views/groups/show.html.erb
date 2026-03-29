@@ -1,0 +1,63 @@
+<% content_for :title, @group.name %>
+
+<div class="container mx-auto p-6 max-w-2xl">
+  <div class="flex items-start justify-between mb-6">
+    <div>
+      <h1 class="text-3xl font-bold"><%= @group.name %></h1>
+      <% if @group.description.present? %>
+        <p class="mt-2 text-base-content/70"><%= @group.description %></p>
+      <% end %>
+    </div>
+    <div class="flex gap-2">
+      <% if @group.organizer?(current_user) %>
+        <%= link_to "Edit", edit_group_path(@group), class: "btn btn-sm btn-ghost" %>
+        <%= button_to "Delete", @group, method: :delete, class: "btn btn-sm btn-error btn-outline",
+            data: { turbo_confirm: "Delete this group and all its memberships?" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card bg-base-100 shadow mb-4">
+    <div class="card-body">
+      <h2 class="card-title text-lg">Members</h2>
+
+      <% if @memberships.empty? %>
+        <p class="text-base-content/50 text-sm">No members yet.</p>
+      <% else %>
+        <ul class="divide-y divide-base-200">
+          <% @memberships.each do |membership| %>
+            <li class="flex items-center justify-between py-2">
+              <div class="flex items-center gap-2">
+                <span class="text-sm"><%= membership.user.email %></span>
+                <span class="badge <%= membership.role == "organizer" ? "badge-primary" : "badge-ghost" %> badge-sm">
+                  <%= membership.role %>
+                </span>
+              </div>
+              <div class="flex gap-2">
+                <% if @group.organizer?(current_user) && membership.role == "member" %>
+                  <%= button_to "Make Organizer", group_membership_path(membership),
+                      method: :patch, class: "btn btn-xs btn-ghost",
+                      params: { group_membership: { role: "organizer" } } %>
+                <% end %>
+                <% if current_user == membership.user || @group.organizer?(current_user) %>
+                  <% label = current_user == membership.user ? "Leave" : "Remove" %>
+                  <%= button_to label, group_membership_path(membership),
+                      method: :delete, class: "btn btn-xs btn-error btn-outline",
+                      data: { turbo_confirm: current_user == membership.user ? "Leave this group?" : "Remove this member?" } %>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+
+  <% unless @group.member?(current_user) %>
+    <div class="text-center">
+      <%= button_to "Join Group", group_group_memberships_path(@group), method: :post, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <%= link_to "← Back to Groups", groups_path, class: "link link-hover text-sm mt-4 inline-block" %>
+</div>
