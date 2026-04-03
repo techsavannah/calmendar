@@ -56,10 +56,38 @@
       <div class="divider"></div>
 
       <h3 class="font-semibold text-error">Danger Zone</h3>
-      <%= button_to "Delete My Account", registration_path(resource_name),
-            params: { _method: :delete },
-            data: { turbo_confirm: "Are you sure? This cannot be undone." },
-            class: "btn btn-error btn-outline btn-sm mt-2 w-full" %>
+      <p class="text-sm text-base-content/60 mt-1">Permanently delete your account and all associated data.</p>
+      <button class="btn btn-error btn-outline btn-sm mt-2 w-full" onclick="delete_account_modal.showModal()">
+        Delete My Account
+      </button>
     </div>
   </div>
 </div>
+
+<dialog id="delete_account_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold text-error">Delete Account</h3>
+    <p class="py-4">This will permanently delete your account and all associated data. This action cannot be undone.</p>
+    <p class="text-sm font-medium mb-2">Type <span class="font-mono font-bold">DELETE</span> to confirm:</p>
+    <input type="text" id="delete_confirmation_input" class="input input-bordered w-full" placeholder="DELETE" oninput="toggleDeleteButton(this.value)" />
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-ghost">Cancel</button>
+      </form>
+      <%= button_to "Delete My Account", registration_path(resource_name),
+            method: :delete,
+            id: "confirm_delete_btn",
+            disabled: true,
+            class: "btn btn-error" %>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+
+<script>
+  function toggleDeleteButton(value) {
+    document.getElementById("confirm_delete_btn").disabled = value !== "DELETE";
+  }
+</script>
