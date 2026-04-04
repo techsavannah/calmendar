@@ -1,0 +1,51 @@
+<% content_for :title, "Events — #{@group.name}" %>
+
+<div class="container mx-auto p-6 max-w-4xl">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-3xl font-bold">Events</h1>
+      <p class="text-base-content/70 mt-1"><%= link_to @group.name, @group, class: "link link-hover" %></p>
+    </div>
+    <% if @group.organizer?(current_user) %>
+      <%= link_to "New Event", new_group_event_path(@group), class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
+  <% if @events.empty? %>
+    <div class="text-center py-16 text-base-content/50">
+      <p class="text-lg">No events yet.</p>
+      <% if @group.organizer?(current_user) %>
+        <p class="mt-2"><%= link_to "Create the first one", new_group_event_path(@group), class: "link" %></p>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <% @events.each do |event| %>
+        <div class="card bg-base-100 shadow">
+          <div class="card-body">
+            <div class="flex flex-wrap gap-1 mb-1">
+              <span class="badge badge-sm <%= event.status == 'published' ? 'badge-success' : event.status == 'canceled' ? 'badge-error' : 'badge-ghost' %>">
+                <%= event.status %>
+              </span>
+              <% if event.visibility == "private" %>
+                <span class="badge badge-sm badge-outline">private</span>
+              <% end %>
+            </div>
+            <h2 class="card-title text-base"><%= event.title %></h2>
+            <p class="text-base-content/70 text-sm">
+              <%= event.starts_at.strftime("%b %-d, %Y · %-I:%M %p") %>
+            </p>
+            <% if event.location.present? %>
+              <p class="text-base-content/50 text-sm line-clamp-1"><%= event.location %></p>
+            <% end %>
+            <div class="card-actions justify-end mt-2">
+              <%= link_to "View", event, class: "btn btn-sm btn-primary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= link_to "← Back to group", @group, class: "link link-hover text-sm mt-6 inline-block" %>
+</div>

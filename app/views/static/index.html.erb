@@ -19,3 +19,26 @@
     </div>
   </div>
 </div>
+
+<% if @upcoming_events.any? %>
+  <div class="container mx-auto px-6 pb-12 max-w-4xl">
+    <h2 class="text-2xl font-bold mb-4">Upcoming Events</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <% @upcoming_events.each do |event| %>
+        <div class="card bg-base-100 shadow">
+          <div class="card-body">
+            <h3 class="card-title text-base"><%= event.title %></h3>
+            <p class="text-base-content/70 text-sm"><%= event.starts_at.strftime("%b %-d, %Y · %-I:%M %p") %></p>
+            <% if event.location.present? %>
+              <p class="text-base-content/50 text-sm line-clamp-1"><%= event.location %></p>
+            <% end %>
+            <p class="text-base-content/50 text-xs"><%= event.group.name %></p>
+            <div class="card-actions justify-end mt-1">
+              <%= link_to "View", event, class: "btn btn-sm btn-primary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

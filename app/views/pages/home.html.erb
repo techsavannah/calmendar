@@ -1,4 +1,53 @@
 <div class="container mx-auto p-6 max-w-4xl">
+  <% if @upcoming_events.any? %>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold mb-4">Upcoming Events</h2>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <% @upcoming_events.each do |event| %>
+          <div class="card bg-base-100 shadow">
+            <div class="card-body">
+              <% if event.visibility == "private" %>
+                <span class="badge badge-sm badge-outline self-start">private</span>
+              <% end %>
+              <h3 class="card-title text-base"><%= event.title %></h3>
+              <p class="text-base-content/70 text-sm"><%= event.starts_at.strftime("%b %-d, %Y · %-I:%M %p") %></p>
+              <% if event.location.present? %>
+                <p class="text-base-content/50 text-sm line-clamp-1"><%= event.location %></p>
+              <% end %>
+              <p class="text-base-content/50 text-xs"><%= event.group.name %></p>
+              <div class="card-actions justify-end mt-1">
+                <%= link_to "View", event, class: "btn btn-sm btn-primary" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @discover_events.any? %>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold mb-4">Discover Events</h2>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <% @discover_events.each do |event| %>
+          <div class="card bg-base-100 shadow">
+            <div class="card-body">
+              <h3 class="card-title text-base"><%= event.title %></h3>
+              <p class="text-base-content/70 text-sm"><%= event.starts_at.strftime("%b %-d, %Y · %-I:%M %p") %></p>
+              <% if event.location.present? %>
+                <p class="text-base-content/50 text-sm line-clamp-1"><%= event.location %></p>
+              <% end %>
+              <p class="text-base-content/50 text-xs"><%= event.group.name %></p>
+              <div class="card-actions justify-end mt-1">
+                <%= link_to "View", event, class: "btn btn-sm btn-ghost" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
   <div class="mb-4 flex items-center justify-between">
     <h2 class="text-xl font-semibold">My Groups</h2>
     <%= link_to "Browse all groups", groups_path, class: "link link-hover text-sm" %>
