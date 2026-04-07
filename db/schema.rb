@@ -10,9 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_29_113924) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_04_133050) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "event_rsvps", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "event_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["event_id", "user_id"], name: "index_event_rsvps_on_event_id_and_user_id", unique: true
+    t.index ["event_id"], name: "index_event_rsvps_on_event_id"
+    t.index ["user_id"], name: "index_event_rsvps_on_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.datetime "ends_at", null: false
+    t.bigint "group_id", null: false
+    t.string "location"
+    t.datetime "rsvp_closes_at"
+    t.integer "rsvp_limit"
+    t.datetime "rsvp_opens_at"
+    t.datetime "starts_at", null: false
+    t.string "status", default: "draft", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.string "visibility", default: "public", null: false
+    t.index ["group_id", "status"], name: "index_events_on_group_id_and_status"
+    t.index ["group_id"], name: "index_events_on_group_id"
+    t.index ["starts_at"], name: "index_events_on_starts_at"
+  end
 
   create_table "group_memberships", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -46,6 +75,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_29_113924) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "event_rsvps", "events"
+  add_foreign_key "event_rsvps", "users"
+  add_foreign_key "events", "groups"
   add_foreign_key "group_memberships", "groups"
   add_foreign_key "group_memberships", "users"
 end

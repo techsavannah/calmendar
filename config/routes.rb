@@ -12,6 +12,9 @@ Rails.application.routes.draw do
 
   resources :groups do
     resources :group_memberships, only: [ :create, :update, :destroy ], shallow: true
+    resources :events, shallow: true do
+      resources :event_rsvps, only: [ :create, :destroy ], shallow: true
+    end
   end
 
   root "static#index"

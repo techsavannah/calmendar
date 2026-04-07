@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :group_memberships, dependent: :destroy
   has_many :groups, through: :group_memberships
+  has_many :event_rsvps, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

@@ -1,0 +1,12 @@
+<% content_for :title, "New Event — #{@group.name}" %>
+
+<div class="container mx-auto p-6 max-w-2xl">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold">New Event</h1>
+    <p class="text-base-content/70 mt-1">for <%= link_to @group.name, @group, class: "link link-hover" %></p>
+  </div>
+
+  <%= render "form", event: @event, group: @group %>
+
+  <%= link_to "← Back to events", group_events_path(@group), class: "link link-hover text-sm mt-4 inline-block" %>
+</div>

@@ -53,6 +53,35 @@
     </div>
   </div>
 
+  <%# Upcoming events %>
+  <% upcoming_events = @group.organizer?(current_user) ?
+      @group.events.published.upcoming.order(:starts_at).limit(3) :
+      @group.events.published.upcoming.order(:starts_at).limit(3) %>
+  <div class="card bg-base-100 shadow mb-4">
+    <div class="card-body">
+      <div class="flex items-center justify-between">
+        <h2 class="card-title text-lg">Upcoming Events</h2>
+        <%= link_to "View all", group_events_path(@group), class: "link link-hover text-sm" %>
+      </div>
+
+      <% if upcoming_events.empty? %>
+        <p class="text-base-content/50 text-sm">No upcoming events.</p>
+        <% if @group.organizer?(current_user) %>
+          <%= link_to "Create an event", new_group_event_path(@group), class: "btn btn-sm btn-primary mt-2 self-start" %>
+        <% end %>
+      <% else %>
+        <ul class="divide-y divide-base-200">
+          <% upcoming_events.each do |event| %>
+            <li class="py-2">
+              <%= link_to event.title, event, class: "font-medium hover:underline" %>
+              <p class="text-base-content/60 text-xs mt-0.5"><%= event.starts_at.strftime("%b %-d, %Y · %-I:%M %p") %></p>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+
   <% unless @group.member?(current_user) %>
     <div class="text-center">
       <%= button_to "Join Group", group_group_memberships_path(@group), method: :post, class: "btn btn-primary" %>

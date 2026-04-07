@@ -1,0 +1,95 @@
+<% content_for :title, @event.title %>
+
+<div class="container mx-auto p-6 max-w-2xl">
+  <%# Header %>
+  <div class="flex items-start justify-between mb-4">
+    <div class="flex-1">
+      <div class="flex flex-wrap items-center gap-2 mb-2">
+        <span class="badge <%= @event.status == 'published' ? 'badge-success' : @event.status == 'canceled' ? 'badge-error' : 'badge-ghost' %>">
+          <%= @event.status %>
+        </span>
+        <span class="badge badge-outline">
+          <%= @event.visibility %>
+        </span>
+      </div>
+      <h1 class="text-3xl font-bold"><%= @event.title %></h1>
+      <p class="text-base-content/70 mt-1">
+        <%= link_to @event.group.name, @event.group, class: "link link-hover" %>
+      </p>
+    </div>
+    <% if user_signed_in? && @event.group.organizer?(current_user) %>
+      <div class="flex gap-2 ml-4">
+        <%= link_to "Edit", edit_event_path(@event), class: "btn btn-sm btn-ghost" %>
+        <%= button_to "Delete", @event, method: :delete, class: "btn btn-sm btn-error btn-outline",
+            data: { turbo_confirm: "Delete this event?" } %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Time and location %>
+  <div class="card bg-base-100 shadow mb-4">
+    <div class="card-body py-4">
+      <div class="flex flex-col gap-1 text-sm">
+        <div class="flex items-center gap-2">
+          <span class="font-semibold">Starts:</span>
+          <span><%= @event.starts_at.strftime("%A, %B %-d, %Y at %-I:%M %p") %></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold">Ends:</span>
+          <span><%= @event.ends_at.strftime("%A, %B %-d, %Y at %-I:%M %p") %></span>
+        </div>
+        <% if @event.location.present? %>
+          <div class="flex items-center gap-2">
+            <span class="font-semibold">Location:</span>
+            <span><%= @event.location %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%# Description %>
+  <% if @event.description.present? %>
+    <div class="card bg-base-100 shadow mb-4">
+      <div class="card-body prose max-w-none">
+        <%= render_markdown(@event.description) %>
+      </div>
+    </div>
+  <% end %>
+
+  <%# RSVP section %>
+  <% if @event.status == "published" %>
+    <div class="card bg-base-100 shadow mb-4">
+      <div class="card-body">
+        <h2 class="card-title text-lg">RSVPs</h2>
+
+        <div class="text-sm text-base-content/70 mb-3">
+          <%= @rsvp_count %> <%= "person".pluralize(@rsvp_count) %> going
+          <% if @event.rsvp_limit.present? %>
+            &middot; <%= @event.rsvp_limit - @rsvp_count %> spots remaining
+          <% end %>
+        </div>
+
+        <% if @event.rsvp_opens_at.present? && @event.rsvp_opens_at > Time.current %>
+          <p class="text-sm text-base-content/50">RSVPs open <%= @event.rsvp_opens_at.strftime("%B %-d at %-I:%M %p") %></p>
+        <% elsif @event.rsvp_closes_at.present? && @event.rsvp_closes_at <= Time.current %>
+          <p class="text-sm text-base-content/50">RSVPs are closed.</p>
+        <% elsif user_signed_in? %>
+          <% if @user_rsvp %>
+            <%= button_to "Cancel RSVP", event_rsvp_path(@user_rsvp), method: :delete,
+                class: "btn btn-sm btn-ghost",
+                data: { turbo_confirm: "Cancel your RSVP?" } %>
+          <% elsif @event.rsvp_full? %>
+            <button class="btn btn-sm btn-disabled" disabled>Event is full</button>
+          <% else %>
+            <%= button_to "RSVP", event_event_rsvps_path(@event), method: :post, class: "btn btn-sm btn-primary" %>
+          <% end %>
+        <% else %>
+          <%= link_to "Sign in to RSVP", new_user_session_path, class: "btn btn-sm btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= link_to "← Back to events", group_events_path(@event.group), class: "link link-hover text-sm mt-4 inline-block" %>
+</div>

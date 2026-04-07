@@ -5,9 +5,9 @@
     "": {
       "name": "calmendar",
       "dependencies": {
-        "@tailwindcss/cli": "latest",
-        "daisyui": "latest",
-        "tailwindcss": "latest",
+        "@tailwindcss/cli": "^4.2.2",
+        "daisyui": "^5.5.19",
+        "tailwindcss": "^4.2.2",
       },
     },
   },
